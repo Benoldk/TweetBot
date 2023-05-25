@@ -11,7 +11,10 @@ expressApp.listen(port, () => {
 
 
 function loadTweets() {
-    return fs.readFileSync('tweets.txt').toString().split("\n");
+    // let weekday = new Date().toLocaleString('en-us', { weekday: 'long' });
+    // let filename = `./tweets/TweetList-${weekday}.txt`
+    let filename = `./tweets/TweetList-Monday.txt`
+    return fs.readFileSync(filename).toString().split("\n");
 }
 
 const postTweets = async (tweet) => {
