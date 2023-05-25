@@ -17,20 +17,25 @@ function loadTweets() {
 const postTweets = async (tweet) => {
     try {
         await twitterClient.v2.tweet(tweet);
-        console.log("successfully tweeted: ", tweet);
+        console.log(`${new Date().toUTCString()} - successfully tweeted: `, tweet);
     }
     catch (e) {
-        console.error('Error sending tweet:', e);
+        console.error(`${new Date().toUTCString()} - Error sending tweet: ${tweet}\r\n`, e);
     }
 }
 
 let index = 0;
 const tweets = loadTweets();
-const cronTweet = new CronJob("*/25 * * * *", async () => {
+const cronTweet = new CronJob("*/6 * * * *", async () => {
     const tweet = tweets[index];
     if (tweet) {
         postTweets(tweet);
         index = (index + 1) % tweets.length;
+    }
+
+    if (index === tweet.length) {
+        console.log(`${new Date().toUTCString()} - Exiting application`);
+        process.exit(1);
     }
 });
 
